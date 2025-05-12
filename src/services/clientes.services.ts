@@ -1,4 +1,4 @@
-import { Cliente, clientes } from '../seeders/seed';
+import { Cliente, clientes } from '../seeders/clientes';
 
 export class ClientesServices {
   static getClients() {

@@ -1,4 +1,4 @@
-import { Cliente } from '../seeders/seed';
+import { Cliente } from '../seeders/clientes';
 import { ClientesServices } from '../services/clientes.services';
 
 export const getClients = (req: any, res: any) => {
