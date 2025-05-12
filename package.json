@@ -1,0 +1,23 @@
+{
+  "name": "api_proyecto",
+  "version": "1.0.0",
+  "description": "API del proyecto",
+  "main": "app.js",
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "nodemon --watch src --exec ts-node src/app.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.15.17",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
