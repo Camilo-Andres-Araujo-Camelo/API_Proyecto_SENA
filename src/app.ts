@@ -10,7 +10,7 @@ const PORT = app.get('port');
 
 //* Middlewares
 //? Middleware de Morgan para registrar solicitudes
-app.use(morgan('dev')); // Ejecuta morgan en modo desarrollo
+app.use(morgan('dev')); // Ejecuta morgan en modo dev
 app.use(express.urlencoded({ extended: false })); // Middleware para analizar datos URL-encoded
 app.use(express.json()); // Middleware para analizar datos JSON
 
