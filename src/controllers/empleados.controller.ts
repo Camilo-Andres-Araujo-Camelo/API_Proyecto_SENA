@@ -1,11 +1,11 @@
-import { ICliente } from '../models/cliente';
-import { ClientesServices } from '../services/clientes.services';
+import { IEmpleado } from '../models/empleado';
+import { EmpleadosServices } from '../services/empleados.services';
 
-export const getClients = async (req: any, res: any) => {
+export const getEmpleados = async (req: any, res: any) => {
   try {
-    const result = await ClientesServices.getClients();
+    const result = await EmpleadosServices.getEmpleados();
     res.status(200).json({
-      message: 'Clientes obtenidos correctamente',
+      message: 'Empleados obtenidos correctamente',
       total: result.length,
       data: result,
     });
@@ -17,19 +17,19 @@ export const getClients = async (req: any, res: any) => {
   }
 };
 
-export const getClientById = async (req: any, res: any) => {
+export const getEmpleadoById = async (req: any, res: any) => {
   try {
     const { id } = req.params;
-    const result = await ClientesServices.getClientById(id);
+    const result = await EmpleadosServices.getEmpleadoById(id);
     if (!result) {
-      //! Respuesta 404 - Cliente no encontrado
+      //! Respuesta 404 - Empleado no encontrado
       return res.status(404).json({
-        message: `Error: Cliente con ID: ${id} no encontrado`,
+        message: `Error: Empleado con ID: ${id} no encontrado`,
       });
     }
-    //* Respuesta 200 - Cliente encontrado
+    //* Respuesta 200 - Empleado encontrado
     res.status(200).json({
-      message: `Cliente con ID: ${id} encontrado`,
+      message: `Empleado con ID: ${id} encontrado`,
       data: result,
     });
   } catch (error) {
@@ -40,11 +40,12 @@ export const getClientById = async (req: any, res: any) => {
   }
 };
 
-export const createClient = async (req: any, res: any) => {
+export const createEmpleado = async (req: any, res: any) => {
   try {
     const {
       id,
       tipoDocumento,
+      password,
       nombres,
       apellidos,
       fechaNacimiento,
@@ -52,11 +53,13 @@ export const createClient = async (req: any, res: any) => {
       direccion,
       telefono,
       email,
-      fechaRegistro,
-    } = req.body;
+      role, // roles es opcional, se puede dejar vacío
+    }: any = req.body;
+
     if (
       !id ||
       !tipoDocumento ||
+      !password ||
       !nombres ||
       !apellidos ||
       !fechaNacimiento ||
@@ -64,14 +67,14 @@ export const createClient = async (req: any, res: any) => {
       !direccion ||
       !telefono ||
       !email ||
-      !fechaRegistro
+      !role // Verifica si roles tiene al menos un elemento
     ) {
-      //! Respuesta 400 - Campos faltantes
       return res.status(400).json({
         message: 'Todos los campos son obligatorios',
         camposRequeridos: [
           'id: string',
           'tipoDocumento: string',
+          'password: string',
           'nombres: string',
           'apellidos: string',
           'fechaNacimiento: string',
@@ -79,25 +82,28 @@ export const createClient = async (req: any, res: any) => {
           'direccion: string',
           'telefono: string',
           'email: string',
-          'fechaRegistro: string',
+          'role: string',
         ],
       });
     }
 
-    //! Respuesta 409 - Cliente ya existe
-    const clientesBd = await ClientesServices.getClients();
-    const newCliente: ICliente = req.body;
-    const existingClient = clientesBd.find((c) => c.id === newCliente.id);
-    if (existingClient) {
-      return res.status(409).json({
-        message: `Error: Cliente con ID: ${newCliente.id} ya existe`,
-      });
-    }
+    const newEmpleado = {
+      id,
+      tipoDocumento,
+      password,
+      nombres,
+      apellidos,
+      fechaNacimiento,
+      sexo,
+      direccion,
+      telefono,
+      email,
+      role,
+    };
 
-    //* Respuesta 201 - Cliente creado
-    const result: ICliente = await ClientesServices.createClient(newCliente);
+    const result = await EmpleadosServices.createEmpleado(newEmpleado);
     res.status(201).json({
-      message: `Cliente creado correctamente`,
+      message: 'Empleado creado correctamente',
       data: result,
     });
   } catch (error) {
@@ -108,20 +114,23 @@ export const createClient = async (req: any, res: any) => {
   }
 };
 
-export const updateClientById = async (req: any, res: any) => {
+export const updateEmpleadoById = async (req: any, res: any) => {
   try {
     const { id } = req.params;
-    const updatedClient: ICliente = req.body;
-    const result = await ClientesServices.updateClientById(id, updatedClient);
-    //! Respuesta 404 - Cliente no eliminado
+    const updatedEmpleado: IEmpleado = req.body;
+
+    const result = await EmpleadosServices.updateEmpleadoById(
+      id,
+      updatedEmpleado
+    );
     if (!result) {
       return res.status(404).json({
-        message: `Error: Cliente con ID: ${id} no encontrado`,
+        message: `Error: Empleado con ID: ${id} no encontrado`,
       });
     }
-    //* Respuesta 200 - Cliente actualizado
+
     res.status(200).json({
-      message: `Cliente con ID: ${id} actualizado correctamente`,
+      message: `Empleado con ID: ${id} actualizado correctamente`,
       data: result,
     });
   } catch (error) {
@@ -132,20 +141,17 @@ export const updateClientById = async (req: any, res: any) => {
   }
 };
 
-export const deleteClientById = async (req: any, res: any) => {
+export const deleteEmpleadoById = async (req: any, res: any) => {
   try {
     const { id } = req.params;
-    const result = await ClientesServices.deleteClientById(id);
-    //! Respuesta 404 - Cliente no encontrado
+    const result = await EmpleadosServices.deleteEmpleadoById(id);
     if (!result) {
       return res.status(404).json({
-        message: `Error: Cliente con ID: ${id} no encontrado`,
+        message: `Error: Empleado con ID: ${id} no encontrado`,
       });
     }
-
-    //* Respuesta 200 - Cliente eliminado
     res.status(200).json({
-      message: `Cliente con ID: ${id} eliminado correctamente`,
+      message: `Empleado con ID: ${id} eliminado correctamente`,
     });
   } catch (error) {
     res.status(400).json({

@@ -1,17 +1,6 @@
-export type Cliente = {
-  id: string;
-  tipoDocumento: string;
-  nombres: string;
-  apellidos: string;
-  fechaNacimiento: string;
-  sexo: string;
-  direccion: string;
-  telefono: string;
-  email: string;
-  fechaRegistro: string;
-};
+import { ICliente } from '../models/cliente';
 
-export const clientes: Cliente[] = [
+export const clientes: ICliente[] = [
   {
     id: '1001759861',
     tipoDocumento: 'CC',
