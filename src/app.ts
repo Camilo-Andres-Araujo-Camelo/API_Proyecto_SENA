@@ -5,6 +5,8 @@ import morgan from 'morgan';
 import { routerApi } from './routes';
 import { db } from './utils/database';
 import { initModels } from './models/initModels';
+import dotenv from 'dotenv';
+dotenv.config();
 
 //* Settings
 const app = express();
@@ -14,6 +16,7 @@ const PORT = app.get('port');
 //* Inicializar modelos y sincronizar la base de datos
 initModels(); // Llama a la función initModels para inicializar los modelos
 // db.sync({ force: true }) //* elimina tablas existentes y las vuelve a crear
+
 db.sync()
   .then(() => console.log('base de datos sincronizada'))
   .catch((error) => console.log(error));

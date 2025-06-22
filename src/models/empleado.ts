@@ -72,5 +72,6 @@ export const Empleado = db.define(
         empleado.password = hash;
       },
     },
+    timestamps: false,
   }
 );
